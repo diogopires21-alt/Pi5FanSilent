@@ -7,7 +7,6 @@ arch:
   - aarch64
 privileged:
   - SYS_ADMIN
-host_pid: true
 map: []
 options: {}
 schema: {}
