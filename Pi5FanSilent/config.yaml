@@ -1,12 +1,14 @@
 name: "Pi 5 Fan Silent"
 description: "Configura a ventoinha do Raspberry Pi 5 para silêncio máximo - só ativa aos 70°C"
-version: "1.0.2"
+version: "1.0.3"
 slug: "pi5fansilent"
 init: false
 arch:
   - aarch64
+host_pid: true
 privileged:
   - SYS_ADMIN
+  - SYS_PTRACE
 map: []
 options: {}
 schema: {}
