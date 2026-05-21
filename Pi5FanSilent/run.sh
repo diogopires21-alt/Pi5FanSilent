@@ -1,20 +1,17 @@
 #!/bin/sh
 
-echo "[Pi5 Fan Silent] A montar /dev/mmcblk0p1..."
-mkdir -p /tmp/bootmnt
+echo "=== Partições disponíveis ==="
+cat /proc/partitions 2>/dev/null
 
-if mount -t vfat -o rw /dev/mmcblk0p1 /tmp/bootmnt 2>/dev/null; then
-    echo "Montado. Conteudo:"
-    ls -la /tmp/bootmnt/
-    echo "---"
-    ls -la /tmp/bootmnt/firmware/ 2>/dev/null || echo "(sem pasta firmware)"
-    umount /tmp/bootmnt
-else
-    echo "[ERRO] Falhou ao montar /dev/mmcblk0p1"
-    echo "A tentar p2..."
-    if mount /dev/mmcblk0p2 /tmp/bootmnt 2>/dev/null; then
-        echo "p2 montado. Conteudo:"
-        ls -la /tmp/bootmnt/
-        umount /tmp/bootmnt
-    fi
-fi
+echo "=== Mounts do host ==="
+cat /proc/mounts 2>/dev/null | grep mmcblk
+
+echo "=== Tipo de filesystem ==="
+blkid /dev/mmcblk0p1 2>/dev/null || fdisk -l /dev/mmcblk0 2>/dev/null | head -20
+
+echo "=== A tentar montar sem especificar tipo ==="
+mkdir -p /tmp/bootmnt
+mount /dev/mmcblk0p1 /tmp/bootmnt 2>&1
+echo "Exit code: $?"
+ls /tmp/bootmnt/ 2>/dev/null
+umount /tmp/bootmnt 2>/dev/null
